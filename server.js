@@ -5,10 +5,15 @@ const cors = require("cors");
 
 const app = express();
 
+const monitorRoutes = require("./src/routes/monitorRoutes");
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.use("/monitors", monitorRoutes);
 
 // Health Check Route
 app.get("/", (req, res) => {
