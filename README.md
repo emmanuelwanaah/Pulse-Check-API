@@ -254,7 +254,6 @@ Benefits include:
 * Better user experience for administrators
 
 ---
-
 ## Setup Instructions
 
 Clone the repository:
@@ -275,11 +274,13 @@ Install dependencies:
 npm install
 ```
 
-Create a `.env` file:
+(Optional) Create a `.env` file if you want to customize the server port:
 
 ```env
 PORT=5000
 ```
+
+> Note: The application uses port `5000` by default, so creating a `.env` file is not required.
 
 Run the application:
 
@@ -299,7 +300,6 @@ Server URL:
 http://localhost:5000
 ```
 
----
 
 ## Future Improvements
 
