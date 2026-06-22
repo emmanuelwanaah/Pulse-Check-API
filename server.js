@@ -15,10 +15,28 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/monitors", monitorRoutes);
-app.use(express.static(path.join(__dirname, "frontend")));
 
-// Health Check Route
 app.get("/", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "frontend", "register.html")
+    );
+});
+
+
+app.get("/dashboard", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "frontend", "dashboard.html")
+    );
+});
+
+app.get("/device", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "frontend", "device.html")
+    );
+});
+
+
+app.get("/health", (req, res) => {
     res.status(200).json({
         success: true,
         message: "Pulse Check API Running",
@@ -26,6 +44,10 @@ app.get("/", (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+app.use(express.static(path.join(__dirname, "frontend")));
+
+
+
 
 // 404 Handler
 app.use((req, res) => {

@@ -72,26 +72,60 @@ exports.pauseMonitoring = (req, res) => {
 };
 
 exports.getSingleMonitor = (req, res) => {
+
     try {
-        const monitor = getMonitor(req.params.id);
+
+        const monitor =
+            getMonitor(
+                req.params.id
+            );
 
         res.status(200).json({
+
             success: true,
+
             data: {
+
                 id: monitor.id,
-                timeout: monitor.timeout,
-                alert_email: monitor.alert_email,
-                status: monitor.status,
-                paused: monitor.paused
+
+                timeout:
+                    monitor.timeout,
+
+                alert_email:
+                    monitor.alert_email,
+
+                status:
+                    monitor.status,
+
+                paused:
+                    monitor.paused,
+
+                createdAt:
+                    monitor.createdAt,
+
+                lastHeartbeat:
+                    monitor.lastHeartbeat,
+
+                activityLog:
+                    monitor.activityLog
+
             }
+
         });
 
     } catch (error) {
+
         res.status(404).json({
+
             success: false,
-            message: error.message
+
+            message:
+                error.message
+
         });
+
     }
+
 };
 
 exports.getMonitors = (req, res) => {

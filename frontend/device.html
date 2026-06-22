@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Device Details - Weather Station 01</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#dad7ff",
+                      "inverse-surface": "#213145",
+                      "on-secondary-fixed": "#131b2e",
+                      "tertiary-fixed-dim": "#ffb695",
+                      "outline-variant": "#c7c4d8",
+                      "error-container": "#ffdad6",
+                      "tertiary-container": "#a44100",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "surface-tint": "#4d44e3",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-tertiary-fixed": "#351000",
+                      "on-background": "#0b1c30",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#777587",
+                      "primary": "#3525cd",
+                      "on-primary-fixed": "#0f0069",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-tertiary-container": "#ffd2be",
+                      "background": "#f8f9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-surface-variant": "#464555",
+                      "surface-container-high": "#dce9ff",
+                      "on-secondary-container": "#5c647a",
+                      "surface-container-low": "#eff4ff",
+                      "surface-bright": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "surface-variant": "#d3e4fe",
+                      "secondary-container": "#dae2fd",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed": "#ffdbcc",
+                      "secondary": "#565e74",
+                      "on-tertiary-fixed-variant": "#7b2f00",
+                      "surface": "#f8f9ff",
+                      "on-surface": "#0b1c30",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#e5eeff",
+                      "secondary-fixed": "#dae2fd",
+                      "tertiary": "#7e3000",
+                      "inverse-primary": "#c3c0ff",
+                      "primary-fixed": "#e2dfff",
+                      "surface-dim": "#cbdbf5",
+                      "primary-container": "#4f46e5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xs": "8px",
+                      "gutter": "24px",
+                      "md": "24px",
+                      "xl": "64px",
+                      "lg": "40px",
+                      "sm": "16px",
+                      "base": "4px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "mono-label": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-md": ["Geist"],
+                      "display-lg": ["Geist"],
+                      "mono-code": ["JetBrains Mono"],
+                      "display-lg-mobile": ["Geist"]
+              },
+              "fontSize": {
+                      "mono-label": ["13px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "mono-code": ["12px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            bottom: 0;
+            width: 1px;
+            background-color: #E2E8F0;
+        }
+        .timeline-item:last-child .timeline-line::before {
+            display: none;
+        }
+        /* Custom scrollbar for dense lists */
+        .dense-scroll::-webkit-scrollbar { width: 4px; }
+        .dense-scroll::-webkit-scrollbar-track { background: transparent; }
+        .dense-scroll::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 w-full z-50">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-sm">
+<img alt="Weather Station Logo" class="w-6 h-6" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADqUlEQVR4AezZSYoVQRAG4KfowgOoS6eD6RVUEDe6cCeoh/As4ikUXTqsxZVgfE9/qCqquqZ8iE03GR1ZkTH8f1bU1H358J//XBCYOIHXyv645GPJhxJztpq2Ha3PAJCPCuKnklcld0vulZizPaw5n1JtRisCQAX464J2s2Q42N6UsSmRvQQAt6ufC9gU8FrqjaZEthIAXF8Dbldv9CD+Ofheig8xr8Pe6BLhI2fPYcnBWgKKpFX09Rjwr1UYoFulkSPmbNbK3BuIyLWptZYS6AKfahXggLxT8ID+WTrDnM0aH75Zi0aEzyoicwT2Ag+46OZEpgi0Bh4C0c2IDAmcGngIRO8m0iXwrLL+KJnqcXcS/auP9ari5d5kyCWn3GqoNUycawTGp1nsEnhexkslw+GCk9SdRBHFhj6tjuVWQy011R7mhvFFjF0CV2IcaD6CBuaTH6qp9lihqzFOOWSdvl6/Nt+nK3bNcA3mya6m2mfGLyGQBOnBVffpBM9owPOA1EJjD8jRFGcRmOrBlkS6wKduHq4DWFYTsBO5K0gyTLCHyBrgMMAyrH88PusMcMhdQRK7sJfIFuAwwDIqcwQSJIld2EqkOfAAW0rgcDgcQ9YSeVJRxIU/1+M2xyapUWHLxloCyaqIYopqrakn58sKIK6XmvaGGLFyyCVnz2HJwVYCya2o4nlyApW1Kc0HcDFi5ZjynbXvJZACQAADFHBjFzubNT58xSR+s25FIACAAk5bxBbNZo1PbLt1awIBNAZyzBb/zfpUBDYDWht4QWDtjrX2vzgDrXd0bb5zfQa+1G74OvIiVtN/MtT2oQPLKIDuGfC3/K6T9xcPHi9inqCSdddPOVdLTX97HXsJ9D+HY/0ugQdl+VYyHIj4PkXk1GcEcDUAV3Ps0xLG+wHZJfCujLdLMPfeUtPeQCRnRBHFeg47DuTSKjZJjTHgMMEG4/vU6hJg87iXwHsLZ0HsXWlJpAt8rFXUhQEWmGCDkf0oQwJHY/3ixFmQYEnK3Bt7iOwGHiRTBLLemkgz4AE4RyB+W4gkNjo9vqlVkmSolxJI3JCIO0LWotNaOY6eAi6HNtWu2laNxMzqtQSSUBHF3BEU95mYtcNh2UyMWDnkknNZZMdrK4GkUFRxn4nAjF3s8Y3mw1eMWDmytlrvJZCCQACjDYADMmvRbNb48BWTtc26FYEAAAo4IN+W8ddfMWezxqfMbUZrAkEFpMe9/zkQc7asN9OnItAM4Fyi3wAAAP//4hX4BAAAAAZJREFUAwBXowZwPdlp9gAAAABJRU5ErkJggg=="/>
+<span class="font-headline-md text-headline-md font-bold text-on-surface">Weather Station 01</span>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Devices</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Alerts</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Logs</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden ml-xs border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean professional profile headshot of a developer in a tech office setting with soft natural light and a blurred workstation background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg2RUJrcS5ys1uBiCuwf4B1j04PR26TX976Qv6cGW05oQnI-9SvMqoKO2XWA34uy2WElalWCjehsDfTOYNwfjhN-vtb9S4TXDhE4T_HehGSNrtsQJuaRKalASITW-jwCmDyR-_if2YeQqHKu3h2c9XmOM4uZmo-HQyp2jreM2CsqK09KxwaAbSe215Jvr7YuZgUiUXdboJ2xKphj16lpn0SLaqN5hBIR5gdIgYzY_u2Ur4qXl-9eu84-b9dJYxjPButqeM8y2JCPzh"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex pt-16 h-screen">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full py-md px-sm bg-surface-container-low border-r border-outline-variant w-64 fixed left-0">
+<div class="flex items-center gap-sm mb-lg px-xs">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dns</span>
+</div>
+<div>
+<div class="font-mono-label text-mono-label font-bold text-primary">Core Engine</div>
+<div class="font-body-sm text-[10px] text-on-surface-variant">v2.4.1-stable</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+
+<a href="/dashboard"
+class="flex items-center gap-sm px-sm py-xs bg-primary-container text-on-primary-container rounded-xl">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span class="font-mono-label">Dashboard</span>
+</a>
+
+<a href="/"
+class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:bg-surface-container-high">
+    <span class="material-symbols-outlined">add_circle</span>
+    <span class="font-mono-label">Register Monitor</span>
+</a>
+
+<a href="/dashboard"
+class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:bg-surface-container-high">
+    <span class="material-symbols-outlined">devices</span>
+    <span class="font-mono-label">Devices</span>
+</a>
+
+<a href="#activityTimeline"
+class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:bg-surface-container-high">
+    <span class="material-symbols-outlined">history</span>
+    <span class="font-mono-label">Activity Logs</span>
+</a>
+
+</nav>
+
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-64 overflow-y-auto bg-surface">
+<div class="max-w-6xl mx-auto px-gutter py-lg">
+<!-- Hero Section -->
+<div class="mb-xl">
+
+    <div class="flex items-center gap-sm text-on-surface-variant mb-xs">
+
+        <span class="font-body-sm text-body-sm">
+            Devices
+        </span>
+
+        <span class="material-symbols-outlined text-[14px]">
+            chevron_right
+        </span>
+
+        <span
+            id="breadcrumbDevice"
+            class="font-body-sm text-body-sm text-on-surface font-medium">
+
+           
+
+        </span>
+
+    </div>
+
+    <div class="flex items-center gap-md">
+
+        <h1
+            id="deviceName"
+            class="font-display-lg text-display-lg text-on-surface">
+
+          
+
+        </h1>
+
+        <span
+            id="deviceStatusBadge"
+            class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 px-sm py-0.5 rounded-full border border-emerald-100 font-mono-label text-mono-label uppercase tracking-wider">
+
+            <span
+                id="deviceStatusDot"
+                class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse">
+            </span>
+
+            <span id="deviceStatusText">
+                
+            </span>
+
+        </span>
+
+    </div>
+
+</div>
+<!-- Two-Column Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Left Column (Main Content) -->
+<div class="lg:col-span-8 space-y-lg">
+<!-- Device Information Card -->
+<section class="bg-surface-container-lowest border border-outline-variant p-md rounded-lg">
+
+    <div class="flex items-center justify-between mb-sm pb-xs border-b border-outline-variant">
+
+        <h2 class="font-headline-md text-headline-md text-on-surface">
+            Device Information
+        </h2>
+
+        <span class="material-symbols-outlined text-on-surface-variant">
+            info
+        </span>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-sm gap-x-xl">
+
+        <div class="flex flex-col gap-1">
+
+            <span class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest">
+                Device ID
+            </span>
+
+            <span
+                id="deviceId"
+                class="font-mono-code text-mono-code bg-surface-container-low px-xs py-1 rounded border border-outline-variant">
+            </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+            <span class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest">
+                Alert Email
+            </span>
+
+            <span
+                id="deviceEmail"
+                class="font-body-md text-body-md text-on-surface font-medium">
+            </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+            <span class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest">
+                Timeout Duration
+            </span>
+
+            <span
+                id="deviceTimeout"
+                class="font-body-md text-body-md text-on-surface font-medium">
+            </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+            <span class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest">
+                Created Date
+            </span>
+
+            <span
+                id="deviceCreated"
+                class="font-body-md text-body-md text-on-surface font-medium">
+            </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+            <span class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest">
+                Time Remaining
+            </span>
+
+            <span
+                id="remainingTime"
+                class="font-body-md text-body-md text-on-surface font-medium">
+                --
+            </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+            <span class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest">
+                Current Status
+            </span>
+
+            <span
+                id="currentStatus"
+                class="font-body-md text-body-md text-on-surface font-medium">
+                --
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- Monitoring Activity Timeline -->
+<section class="bg-surface-container-lowest border border-outline-variant p-md rounded-lg">
+<div class="flex items-center justify-between mb-lg pb-xs border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-on-surface">Monitoring Activity</h2>
+<div class="flex gap-xs">
+<span class="font-mono-label text-mono-label text-on-surface-variant">Live view</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-ping self-center"></span>
+</div>
+</div>
+<div id="activityTimeline" class="space-y-0 relative">
+
+</div>
+</section>
+</div>
+<!-- Right Column (Sidebar/Actions) -->
+<div class="lg:col-span-4 space-y-lg">
+<!-- Actions Section -->
+<section class="bg-surface-container-lowest border border-outline-variant p-md rounded-lg">
+<h2 class="font-mono-label text-[11px] text-on-surface-variant uppercase tracking-widest mb-sm">Actions</h2>
+<div class="flex flex-col gap-sm">
+<button id="heartbeatBtn" class="flex items-center justify-center gap-xs bg-primary text-on-primary py-sm rounded font-body-sm text-body-sm font-medium hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+                                    Send Heartbeat
+                                </button>
+<button  id="pauseBtn" class="flex items-center justify-center gap-xs bg-surface border border-outline-variant text-on-surface-variant py-sm rounded font-body-sm text-body-sm font-medium hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">pause_circle</span>
+                                    Pause Monitoring
+                                </button>
+<button   id="resumeBtn" class="flex items-center justify-center gap-xs bg-surface border border-outline-variant text-on-surface-variant py-sm rounded font-body-sm text-body-sm font-medium hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+                                    Resume Monitoring
+                                </button>
+</div>
+</section>
+
+<!-- Quick Contextual Visualization -->
+<div class="relative w-full h-32 rounded-lg overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale opacity-60" data-alt="A sophisticated technical diagram visualization of a weather station sensor grid showing node connectivity lines and status indicators in a high-fidelity minimalist blue and slate color palette. Digital engineering aesthetic with clean typography overlays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYLAYy9fAkScdHX0lZ1oIuTEecQB2MZ_B8TjgYK3mMzB_VwuEVegPWw83HLljtfCFLsE3XRAesF5tCwI0KldXwjqCsmexbRYpVIKlGiQO9axdQIpBOmfBPd-nDOIj_ESEN68oGgrU-H9iZrf8X02P-wmYRirOhr0VeQvKPm_q1olaUKyQ9KGpYq_yxJnHysW14fHurUZvsM27wGQFBJbICUrd8P8ws1nSxZVFeruFQ588HCWWg4rIEsKz_dUi5kEDrnUteh-n3fMuF"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent flex items-end p-sm">
+<div class="font-mono-label text-[10px] text-on-surface-variant uppercase">Infrastructure Context</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating Micro-interactions Script -->
+<script>
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+    <script src="/js/device.js"></script>
+</body></html>

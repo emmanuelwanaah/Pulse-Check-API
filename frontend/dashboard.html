@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monitors - Project Alpha</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+        }
+        .mono-font {
+            font-family: 'Geist', monospace;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#0053db",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#ffede6",
+                        "on-primary": "#ffffff",
+                        "primary": "#004ac6",
+                        "inverse-primary": "#b4c5ff",
+                        "primary-container": "#2563eb",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#eeefff",
+                        "surface-container-high": "#e7e7f3",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "tertiary-container": "#bc4800",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#faf8ff",
+                        "inverse-surface": "#2e3039",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "surface-dim": "#d9d9e5",
+                        "on-background": "#191b23",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary": "#515f74",
+                        "secondary-container": "#d5e3fc",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-container-highest": "#e1e2ed",
+                        "surface-container-low": "#f3f3fe",
+                        "on-error": "#ffffff",
+                        "background": "#faf8ff",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#943700",
+                        "on-surface-variant": "#434655",
+                        "on-secondary-container": "#57657a",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-surface": "#191b23",
+                        "outline-variant": "#c3c6d7",
+                        "outline": "#737686",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#ededf9",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdbcd",
+                        "on-tertiary-fixed": "#360f00",
+                        "surface": "#faf8ff",
+                        "surface-variant": "#e1e2ed"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "xxl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "mono-sm": ["Geist"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "mono-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "mono-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["18px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "mono-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Shell Layout -->
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col bg-surface dark:bg-surface-dim h-screen w-64 border-r border-outline-variant z-50">
+
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 flex flex-col overflow-y-auto">
+
+<!-- Page Content -->
+<div class="p-gutter max-w-container-max mx-auto w-full">
+<!-- Breadcrumbs -->
+
+<!-- Header Section -->
+<div class="flex flex-col gap-lg mb-xl">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Monitors</h2>
+<button class="bg-primary text-on-primary px-lg py-md rounded-lg font-body-md flex items-center gap-2 hover:bg-primary-container transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                            Create New Monitor
+                        </button>
+</div>
+<!-- Search Bar -->
+<div class="relative max-w-xl">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface border border-outline-variant rounded-lg text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Search monitors by name, ID, or tag..." type="text"/>
+</div>
+</div>
+
+<!-- Monitor List -->
+<div id="monitorList" class="flex flex-col gap-md">
+
+
+
+</div>
+
+</div>
+</main>
+</div>
+
+   
+    <script src="/js/dashboard.js"></script>
+
+   
+</body></html>

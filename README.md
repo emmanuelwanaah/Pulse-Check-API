@@ -1,14 +1,14 @@
 # Pulse Check API (Watchdog Sentinel)
 
-A Dead Man's Switch monitoring system designed to track remote devices such as solar farm sensors and weather stations. The system continuously monitors device heartbeats and automatically triggers alerts when a device stops communicating.
+A Dead Man's Switch monitoring system designed to monitor remote devices such as solar farm sensors, weather stations, and IoT infrastructure. The system continuously tracks device heartbeats and automatically detects failures when a device stops communicating within a specified timeout period.
 
 ---
 
 ## Overview
 
-Remote devices operating in low-connectivity environments can unexpectedly go offline due to power failure, network issues, or physical damage.
+Organizations operating remote infrastructure often face challenges detecting device failures in real time. A disconnected device may indicate network outages, hardware failures, power issues, or environmental damage.
 
-Pulse Check API allows administrators to register devices with a monitoring timeout. If a device fails to send a heartbeat before its timeout expires, the system automatically marks the device as DOWN and triggers an alert.
+Pulse Check API solves this problem by allowing administrators to register monitors with configurable timeout periods. Devices are expected to periodically send heartbeats to the API. If a heartbeat is not received before the timeout expires, the monitor is automatically marked as **DOWN** and an alert is triggered.
 
 ---
 
@@ -26,13 +26,19 @@ Pulse Check API allows administrators to register devices with a monitoring time
 
 ## Features
 
-- Register monitors
-- Heartbeat monitoring
-- Automatic timer reset
-- Device failure detection
-- Pause monitoring
-- Alert generation
-- Dashboard-ready architecture
+* Register monitors
+* Heartbeat monitoring
+* Automatic timer reset
+* Device failure detection
+* Pause monitoring
+* Resume monitoring
+* Alert generation
+* Device status tracking
+* Live countdown timer
+* Activity timeline logging
+* Dashboard monitor overview
+* Device details page
+* Status filtering (Active, Paused, Down)
 
 ---
 
@@ -41,19 +47,30 @@ Pulse Check API allows administrators to register devices with a monitoring time
 The system consists of the following components:
 
 ### Pulse Check API
-Handles incoming requests from monitored devices.
+
+Handles incoming requests from monitored devices and administrators.
 
 ### Monitor Service
-Contains business logic for monitor registration, heartbeat processing, status updates, and alert generation.
+
+Contains the core business logic for:
+
+* Monitor registration
+* Heartbeat processing
+* Status updates
+* Timer management
+* Alert generation
 
 ### Monitor Timer Manager
-Maintains active monitor timers using JavaScript Map storage and setTimeout.
+
+Maintains monitor timers using JavaScript's `setTimeout()` mechanism and in-memory `Map` storage.
 
 ### Alert Service
-Triggers alerts whenever a monitor fails to send a heartbeat before its timeout expires.
+
+Responsible for generating alerts whenever a monitor fails to send a heartbeat before its configured timeout expires.
 
 ### Monitoring Dashboard
-Provides administrators with visibility into device status and monitoring information.
+
+Provides administrators with a centralized interface for monitoring device health and operational status.
 
 ---
 
@@ -61,7 +78,7 @@ Provides administrators with visibility into device status and monitoring inform
 
 ### Register Monitor
 
-POST /monitors
+**POST /monitors**
 
 Request:
 
@@ -86,7 +103,7 @@ Response:
 
 ### Send Heartbeat
 
-POST /monitors/:id/heartbeat
+**POST /monitors/:id/heartbeat**
 
 Response:
 
@@ -101,7 +118,7 @@ Response:
 
 ### Pause Monitoring
 
-POST /monitors/:id/pause
+**POST /monitors/:id/pause**
 
 Response:
 
@@ -114,9 +131,46 @@ Response:
 
 ---
 
+### Get All Monitors
+
+**GET /monitors**
+
+Response:
+
+```json
+{
+  "success": true,
+  "count": 3,
+  "data": []
+}
+```
+
+---
+
+### Get Single Monitor
+
+**GET /monitors/:id**
+
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "device-123",
+    "timeout": 60,
+    "alert_email": "admin@critmon.com",
+    "status": "active",
+    "paused": false
+  }
+}
+```
+
+---
+
 ## Alert Behaviour
 
-When a monitor fails to send a heartbeat before the configured timeout:
+When a monitor fails to send a heartbeat before its configured timeout:
 
 ```json
 {
@@ -125,7 +179,7 @@ When a monitor fails to send a heartbeat before the configured timeout:
 }
 ```
 
-The monitor status is automatically updated to:
+The monitor status automatically changes to:
 
 ```json
 {
@@ -135,20 +189,69 @@ The monitor status is automatically updated to:
 
 ---
 
+## Monitoring Dashboard
+
+The system includes a web-based monitoring dashboard that provides visibility into all registered devices.
+
+### Dashboard Features
+
+* View all registered monitors
+* Monitor device status in real time
+* Filter monitors by status
+
+  * Active
+  * Paused
+  * Down
+* Navigate to device details pages
+* View monitor information at a glance
+
+---
+
+## Device Details Page
+
+Each monitor includes a dedicated details page displaying:
+
+* Device ID
+* Alert Email
+* Timeout Duration
+* Created Date
+* Current Status
+* Remaining Time Countdown
+
+Administrators can perform the following actions:
+
+* Send Heartbeat
+* Pause Monitoring
+* Resume Monitoring
+
+---
+
+## Activity Timeline
+
+Every monitor records important lifecycle events, including:
+
+* Monitor Registered
+* Heartbeat Received
+* Monitoring Paused
+* Device Down
+
+These events are displayed chronologically to provide operational visibility and aid troubleshooting.
+
+---
+
 ## Developer's Choice Feature
 
 ### Monitoring Dashboard
 
-A dashboard architecture was added to improve observability.
+A complete monitoring dashboard was implemented to improve observability and usability.
 
-Benefits:
+Benefits include:
 
-- View active monitors
-- View down devices
-- Monitor device status
-- Easier operational visibility for administrators
-
-This feature makes the system more user-friendly by providing a centralized monitoring interface.
+* Centralized monitor management
+* Improved operational visibility
+* Faster incident detection
+* Easier monitoring of device health
+* Better user experience for administrators
 
 ---
 
@@ -160,13 +263,19 @@ Clone the repository:
 git clone https://github.com/emmanuelwanaah/Pulse-Check-API.git
 ```
 
+Navigate to the project:
+
+```bash
+cd Pulse-Check-API
+```
+
 Install dependencies:
 
 ```bash
 npm install
 ```
 
-Create .env file:
+Create a `.env` file:
 
 ```env
 PORT=5000
@@ -184,7 +293,7 @@ or
 npm start
 ```
 
-Server:
+Server URL:
 
 ```text
 http://localhost:5000
@@ -194,14 +303,32 @@ http://localhost:5000
 
 ## Future Improvements
 
-- Email notifications
-- Persistent database storage
-- Webhook integrations
-- Authentication and authorization
-- Real-time dashboard updates
+* Email notifications
+* SMS notifications
+* Persistent database storage
+* Webhook integrations
+* Authentication and authorization
+* WebSocket-based real-time updates
+* Historical monitoring analytics
+* Distributed monitor storage
+* Cloud deployment support
+
+---
+
+## Technologies Used
+
+* Node.js
+* Express.js
+* JavaScript (ES6+)
+* HTML
+* CSS
+* Tailwind CSS
+* Material Symbols
+* REST API Architecture
 
 ---
 
 ## Author
 
-Emmanuel Wanaah
+**Emmanuel Wanaah**
+
