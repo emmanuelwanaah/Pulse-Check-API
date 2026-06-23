@@ -1,31 +1,34 @@
 # Pulse-Check-API Architecture Design
 
 ## Overview
-This project implements a Dead Man's Switch API for monitoring remote devices.
 
-A monitor is created for each device with a timeout period. If the device fails to send a heartbeat before the timeout expires, the system triggers an alert and marks the monitor as down.
+Pulse Check API implements a Dead Man's Switch monitoring system for remote devices such as solar farm sensors, weather stations, and other critical infrastructure.
+
+Each device registers a monitor with a configurable timeout period. Devices must periodically send heartbeats to indicate that they are still operational. If a heartbeat is not received before the timeout expires, the system automatically marks the device as DOWN and triggers an alert.
 
 ---
 
 ## Monitor State
 
-Each monitor contains:
+Each monitor maintains the following information:
 
 ```json
 {
   "id": "device-123",
   "timeout": 60,
-  "alertEmail": "admin@critmon.com",
+  "alert_email": "admin@critmon.com",
   "status": "active",
-  "lastHeartbeat": "2026-06-21T10:00:00Z"
+  "paused": false
 }
 ```
 
 ### Status Values
 
-* active
-* paused
-* down
+| Status | Description                                    |
+| ------ | ---------------------------------------------- |
+| active | Device is being monitored and timer is running |
+| paused | Monitoring has been temporarily suspended      |
+| down   | Timer expired and device is considered offline |
 
 ---
 
@@ -33,23 +36,51 @@ Each monitor contains:
 
 ### Register Monitor
 
+```http
 POST /monitors
+```
+
+Creates a new monitor and starts its countdown timer.
+
+---
 
 ### Send Heartbeat
 
+```http
 POST /monitors/:id/heartbeat
+```
+
+Resets the countdown timer and keeps the monitor active.
+
+---
 
 ### Pause Monitor
 
+```http
 POST /monitors/:id/pause
+```
 
-### Get Monitor Status (Developer's Choice)
+Stops the monitor timer and prevents alerts from firing.
 
+---
+
+### Get Monitor Status
+
+```http
 GET /monitors/:id
+```
 
-### Get All Monitors (Dashboard Support)
+Returns information about a specific monitor.
 
+---
+
+### Get All Monitors
+
+```http
 GET /monitors
+```
+
+Returns all registered monitors for dashboard visibility.
 
 ---
 
@@ -58,37 +89,115 @@ GET /monitors
 ```mermaid
 flowchart TD
 
-A[Register Monitor] --> B[Store Monitor]
-B --> C[Start Countdown Timer]
+A[Register Monitor]
+--> B[Store Monitor]
 
-C --> D{Heartbeat Received?}
+B
+--> C[Start Countdown Timer]
 
-D -->|Yes| E[Reset Timer]
-E --> C
+C
+--> D{Heartbeat Received?}
 
-D -->|No| F[Timer Expires]
+D
+-- Yes -->
+E[Reset Timer]
 
-F --> G[Trigger Alert]
-G --> H[Status = DOWN]
+E
+--> C
 
-I[Pause Monitor] --> J[Stop Timer]
+D
+-- No -->
+F[Timer Expires]
 
-K[Heartbeat While Paused] --> L[Resume Monitor]
-L --> E
+F
+--> G[Trigger Alert]
+
+G
+--> H[Status = DOWN]
+
+I[Pause Monitoring]
+--> J[Stop Timer]
+
+K[Heartbeat While Paused]
+--> L[Resume Monitoring]
+
+L
+--> E
 ```
 
 ---
 
-## Developer's Choice
+## Core Components
 
-Additional Features:
+### Pulse Check API
 
-1. MySQL persistence
-2. Monitoring Dashboard
-3. View all monitors endpoint
+Receives requests from monitored devices and administrators.
 
-Reason:
-These features improve observability and ensure monitor information survives server restarts.
+### Monitor Service
 
-```
-```
+Contains the business logic responsible for:
+
+* Monitor registration
+* Heartbeat processing
+* Timer management
+* Status transitions
+* Alert generation
+
+### Timer Manager
+
+Maintains monitor timers using:
+
+* JavaScript Map storage
+* setTimeout()
+* clearTimeout()
+
+### Alert Service
+
+Triggers alerts whenever a monitor fails to send a heartbeat before its timeout expires.
+
+### Monitoring Dashboard
+
+Provides administrators with visibility into monitor status and operational activity.
+
+---
+
+## Developer's Choice Feature
+
+### Monitoring Dashboard & Device Management
+
+To improve observability and usability, a complete monitoring dashboard was implemented.
+
+Features include:
+
+* Dashboard monitor overview
+* Device details page
+* Monitor status filtering
+
+  * Active
+  * Paused
+  * Down
+* Live countdown timer
+* Activity timeline logging
+* Monitor management actions
+
+  * Send Heartbeat
+  * Pause Monitoring
+  * Resume Monitoring
+
+### Reason for Addition
+
+The dashboard makes the system more practical for administrators by providing operational visibility into device health and monitor activity. Instead of relying solely on API responses, administrators can visually track monitor status, investigate failures, and manage devices from a centralized interface.
+
+---
+
+## Storage Strategy
+
+For this implementation, monitor data is maintained using in-memory JavaScript Map storage.
+
+Benefits:
+
+* Fast access
+* Simple implementation
+* Suitable for prototype and demonstration purposes
+
+Future versions can extend this design using persistent database storage such as MySQL or PostgreSQL.
